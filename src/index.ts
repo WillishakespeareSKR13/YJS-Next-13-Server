@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
-import * as http from "http";
 import { Server, Socket } from "socket.io";
 import { YSocketIO } from "y-socket.io/dist/server";
+const express = require("express");
 
-const host = process.env.HOST ?? "localhost";
-const port = parseInt(`${process.env.PORT ?? 1234}`);
+const PORT = process.env.PORT || 4000;
 
 // Create the http server
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ ok: true }));
-});
+const server = express()
+  .use((req: any, res: any) => res.send(`Hello World! ${PORT}`))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 // Create an io instance
 const io = new Server(server);
 
@@ -43,8 +41,3 @@ io.on("connection", (socket: Socket) => {
     console.log(`[disconnect] Disconnected with user: ${socket.id}`);
   });
 });
-
-// Http server listen
-server.listen(port, host, undefined, () =>
-  console.log(`Server running on port ${port}`)
-);
