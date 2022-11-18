@@ -11,7 +11,11 @@ const server = express()
   .use((req: any, res: any) => res.send(`Hello World! ${PORT}`))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 // Create an io instance
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:4000", "yjs-next-13-server.herokuapp.com"],
+  },
+});
 
 // Create the YSocketIO instance
 // NOTE: This uses the socket namespaces that match the regular expression /^\/yjs\|.*$/, make sure that when using namespaces
